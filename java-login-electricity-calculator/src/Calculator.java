@@ -265,7 +265,7 @@ public class Calculator extends javax.swing.JFrame {
 
             double a = Double.parseDouble(s1); //number of units electricity used
             double c = 0.1 * a; //price without VAT
-            double d = c; //price with discount
+            double d = c * 1.2; //price with discount
             String result1 = String.valueOf(c);
             String result2 = String.valueOf(d);
             totcharges.setText(result1);
