@@ -59,14 +59,14 @@ public class Calculator extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Select Customer's Id--", "C001", "C002", "C003" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Select Customer's Id--", "C001", "C002" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
             }
         });
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Select Customer Type--", "Domestic", "Business", "Public" }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Select Customer Type--", "Domestic", "Business" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -151,10 +151,10 @@ public class Calculator extends javax.swing.JFrame {
         jLabel7.setText("Total Charges");
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel8.setText("Fuel Adjustments");
+        jLabel8.setText("Discount");
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel9.setText("Fixed Charge");
+        jLabel9.setText("VAT Percentage");
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel10.setText("Total Bill");
@@ -259,47 +259,34 @@ public class Calculator extends javax.swing.JFrame {
         // TODO add your handling code here:
         String s1 = noofunit.getText();
 
-        String data = jComboBox2.getItemAt(jComboBox2.getSelectedIndex());
+        String customerType = jComboBox2.getItemAt(jComboBox2.getSelectedIndex());
 
-        if(data == "Domestic"){
+        if(customerType == "Domestic"){
 
-            double a = Double.parseDouble(s1);
-            double c = 24.20 * a;
-            double d = c + 540;
+            double a = Double.parseDouble(s1); //number of units electricity used
+            double c = 0.1 * a; //price without VAT
+            double d = c; //price with discount
             String result1 = String.valueOf(c);
             String result2 = String.valueOf(d);
             totcharges.setText(result1);
-            fuel.setText("0%");
-            fixedcharge.setText("Rs. 540.00");
+            fuel.setText("0%"); //no discount for domestic users
+            fixedcharge.setText("20%"); //20% vat for domestic users
             bill.setText(result2);
         }
 
-        else if(data == "Business"){
+        else if(customerType == "Business"){
 
-            double a = Double.parseDouble(s1);
-            double c = 10.80 * a;
-            double d = c + 200 +(c *10)/100;
+            double a = Double.parseDouble(s1); //number of units electricity used
+            double c = 0.05 * a; //price without VAT
+            double d = c * 0.9; //price with discount
             String result1 = String.valueOf(c);
             String result2 = String.valueOf(d);
             totcharges.setText(result1);
-            fuel.setText("10%");
-            fixedcharge.setText("Rs. 200.00");
+            fuel.setText("10%"); //10% discount for businesses
+            fixedcharge.setText("0%"); //no vat for businesses
             bill.setText(result2);
         }
 
-        else if(data == "Public"){
-
-            double a = Double.parseDouble(s1);
-            double c = 12.40 * a;
-            double d = c + 350 +(c *5)/100;
-            String result1 = String.valueOf(c);
-            String result2 = String.valueOf(d);
-            totcharges.setText(result1);
-            fuel.setText("5%");
-            fixedcharge.setText("Rs. 350.00");
-            bill.setText(result2);
-
-        }
         else{
             totcharges.setText("0");
             fuel.setText("0");
@@ -312,19 +299,14 @@ public class Calculator extends javax.swing.JFrame {
         // TODO add your handling code here:
         String id=jComboBox1.getItemAt(jComboBox1.getSelectedIndex());
         if(id=="C001"){
-            name.setText("Abitharani");
-            address.setText("Pointpedro,Jaffna");
-            jComboBox2.setSelectedItem("Business");
-        }
-        else if(id=="C002"){
-            name.setText("Akshaya");
-            address.setText("Kallady,Batticaloa");
+            name.setText("Nikolay Cherepov");
+            address.setText("Plovdiv, Bulgaria");
             jComboBox2.setSelectedItem("Domestic");
         }
-        else if(id=="C003"){
-            name.setText("Thiyana");
-            address.setText("Wellawatte,Colombo");
-            jComboBox2.setSelectedItem("Public");
+        else if(id=="C002"){
+            name.setText("Elon Musk");
+            address.setText("California, USA");
+            jComboBox2.setSelectedItem("Business");
         }
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
