@@ -1,3 +1,7 @@
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+
 public class Calculator extends javax.swing.JFrame {
 
     /**
@@ -35,8 +39,8 @@ public class Calculator extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         totcharges = new javax.swing.JLabel();
-        fuel = new javax.swing.JLabel();
-        fixedcharge = new javax.swing.JLabel();
+        discount = new javax.swing.JLabel();
+        vat = new javax.swing.JLabel();
         bill = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
@@ -116,7 +120,13 @@ public class Calculator extends javax.swing.JFrame {
         jButton1.setText("Calculate Bill Summary");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                try {
+                    jButton1ActionPerformed(evt);
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                } catch (UnsupportedEncodingException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
@@ -161,9 +171,9 @@ public class Calculator extends javax.swing.JFrame {
 
         totcharges.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
 
-        fuel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        discount.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
 
-        fixedcharge.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        vat.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
 
         bill.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
 
@@ -181,8 +191,8 @@ public class Calculator extends javax.swing.JFrame {
                                 .addGap(115, 115, 115)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(totcharges, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(fuel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(fixedcharge, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(discount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(vat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(bill, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE))
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -196,11 +206,11 @@ public class Calculator extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(fuel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(discount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel9)
-                                        .addComponent(fixedcharge, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(vat, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel10)
@@ -255,7 +265,7 @@ public class Calculator extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_nameActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) throws FileNotFoundException, UnsupportedEncodingException {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         String s1 = noofunit.getText();
 
@@ -269,9 +279,18 @@ public class Calculator extends javax.swing.JFrame {
             String result1 = String.valueOf(c);
             String result2 = String.valueOf(d);
             totcharges.setText(result1);
-            fuel.setText("0%"); //no discount for domestic users
-            fixedcharge.setText("20%"); //20% vat for domestic users
+            discount.setText("0%"); //no discount for domestic users
+            vat.setText("20%"); //20% vat for domestic users
             bill.setText(result2);
+
+            //writing the result in a text file
+            PrintWriter writer = new PrintWriter("receipt.txt", "UTF-8");
+            writer.println("Total Charge: " + result1);
+            writer.println("Discount: 0%");
+            writer.println("VAT: 20%");
+            writer.println("Bill: " + result2);
+            writer.close();
+
         }
 
         else if(customerType == "Business"){
@@ -282,15 +301,23 @@ public class Calculator extends javax.swing.JFrame {
             String result1 = String.valueOf(c);
             String result2 = String.valueOf(d);
             totcharges.setText(result1);
-            fuel.setText("10%"); //10% discount for businesses
-            fixedcharge.setText("0%"); //no vat for businesses
+            discount.setText("10%"); //10% discount for businesses
+            vat.setText("0%"); //no vat for businesses
             bill.setText(result2);
+
+            //writing the result in a text file
+            PrintWriter writer = new PrintWriter("receipt.txt", "UTF-8");
+            writer.println("Total Charge: " + result1);
+            writer.println("Discount: 10%");
+            writer.println("VAT: 0%");
+            writer.println("Bill: " + result2);
+            writer.close();
         }
 
         else{
             totcharges.setText("0");
-            fuel.setText("0");
-            fixedcharge.setText("0");
+            discount.setText("0");
+            vat.setText("0");
             bill.setText("0");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -348,8 +375,8 @@ public class Calculator extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField address;
     private javax.swing.JLabel bill;
-    private javax.swing.JLabel fixedcharge;
-    private javax.swing.JLabel fuel;
+    private javax.swing.JLabel vat;
+    private javax.swing.JLabel discount;
     private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
