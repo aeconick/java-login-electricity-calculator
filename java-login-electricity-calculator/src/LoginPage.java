@@ -69,7 +69,7 @@ public class LoginPage implements ActionListener{
                     messageLabel.setForeground(Color.green);
                     messageLabel.setText("Login successful");
                     frame.dispose();
-                    Quiz quiz = new Quiz();
+                    Calculator calculator = new Calculator();
                 }
                 else {
                     messageLabel.setForeground(Color.red);
