@@ -1,0 +1,4 @@
+Total Charge: 200.0
+Discount: 0%
+VAT: 20%
+Bill: 240.0
